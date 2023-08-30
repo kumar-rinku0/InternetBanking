@@ -24,12 +24,12 @@ public class Transitions extends JFrame  implements ActionListener {
         add(image);
         try {
             ConnectionSQL csql = new ConnectionSQL();
-            ResultSet acRs = csql.statement.executeQuery("select * from accountdetails where account_no = '"+ acNo +"'");
+            ResultSet acRs = csql.statement.executeQuery("select * from accountdetails where ac_no = '"+ acNo +"'");
             if(acRs.next()) {
-                accountFormNo = acRs.getString("form_no");
+                accountFormNo = acRs.getString("id_no");
                 acBalance = acRs.getString("amount");
             }
-            ResultSet loginRs = csql.statement.executeQuery("select * from signup where random = '"+accountFormNo+"'");
+            ResultSet loginRs = csql.statement.executeQuery("select * from signupone where id_no = '"+accountFormNo+"'");
             if(loginRs.next()) {
                 accountHolderName = loginRs.getString("name");
             }
@@ -84,7 +84,7 @@ public class Transitions extends JFrame  implements ActionListener {
       
         try {
             ConnectionSQL csql = new ConnectionSQL();
-            ResultSet trT = csql.statement.executeQuery("select * from transitions where account_no = '"+ acNo +"'");
+            ResultSet trT = csql.statement.executeQuery("select * from transitions where ac_no = '"+ acNo +"'");
             while(trT.next()) {
                 statements.setText("<html>"+trT.getString("transition_id")+"&nbsp; &nbsp;"+trT.getString("transition_type")+ "&nbsp; &nbsp;" +trT.getString("date")+ "&nbsp; &nbsp;" +trT.getInt("amount")+"<br><br><html>" + statements.getText());
             }

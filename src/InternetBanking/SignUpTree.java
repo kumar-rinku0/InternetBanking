@@ -176,7 +176,7 @@ public class SignUpTree extends JFrame implements ActionListener {
                 String transitionType = "Cash Deposit";
                 String currentDate = Deposit.timeDateGenerator();
                 int depositAmount = Integer.parseInt(amount);
-                csql.statement.execute("CREATE TABLE IF NOT EXISTS transitions (ac_no varchar(30) NOT NULL, transition_id varchar(30), tarnsition_type varchar(30), date varchar(30), amount varchar(30), PRIMARY KEY (ac_no) );");
+                csql.statement.execute("CREATE TABLE IF NOT EXISTS transitions (ac_no varchar(30) NOT NULL, transition_id varchar(30), transition_type varchar(30), date varchar(30), amount varchar(30) );");
                 csql.statement.executeUpdate("insert into transitions values('"+accountNo+"', '"+transitionId+"', '"+transitionType+"', '"+currentDate+"', '"+depositAmount+"');");
                 
                 

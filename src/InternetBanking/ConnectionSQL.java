@@ -8,7 +8,7 @@ public class ConnectionSQL {
     Statement statement;
     ConnectionSQL() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql:///InternetBanking", "username", "password");
+            connection = DriverManager.getConnection("jdbc:mysql:///InternetBanking", "root", "kumar");
             statement = connection.createStatement();
         }
         catch (Exception e) {

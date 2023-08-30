@@ -25,14 +25,14 @@ public class Pay extends JFrame implements ActionListener {
         add(image);
         try {
             ConnectionSQL csql = new ConnectionSQL();
-            ResultSet acRs = csql.statement.executeQuery("select * from accountdetails where account_no = '" + acNo + "'");
+            ResultSet acRs = csql.statement.executeQuery("select * from accountdetails where ac_no = '" + acNo + "'");
             if (acRs.next()) {
-                accountFormNo = acRs.getString("form_no");
+                accountFormNo = acRs.getString("id_no");
                 acBalance = acRs.getString("amount");
                 myUpi = acRs.getString("upi_id");
                 
             }
-            ResultSet loginRs = csql.statement.executeQuery("select * from signup where random = '" + accountFormNo + "'");
+            ResultSet loginRs = csql.statement.executeQuery("select * from signupone where id_no = '" + accountFormNo + "'");
             if (loginRs.next()) {
                 accountHolderName = loginRs.getString("name");
             }
@@ -167,7 +167,7 @@ public class Pay extends JFrame implements ActionListener {
                 }
                 try {
                     ConnectionSQL csql = new ConnectionSQL();
-                    ResultSet rs = csql.statement.executeQuery("select * from accountdetails where account_no = '" + accountNumberOrUpi + "' and user_name = '" + accountHolder + "'");
+                    ResultSet rs = csql.statement.executeQuery("select * from accountdetails where ac_no = '" + accountNumberOrUpi + "' and user_id = '" + accountHolder + "'");
 
                     if (!acNo.equals(accountNumberOrUpi) && rs.next()) {
                         String newAcAmount = rs.getString("amount");
@@ -183,17 +183,17 @@ public class Pay extends JFrame implements ActionListener {
                                         String user = log.textField.getText();
                                         String pass = log.passwordField.getText();
                                         String transitionType = "Online Send";
-                                        ResultSet result = csql.statement.executeQuery("select * from accountdetails where account_no = '" + acNo + "' and pass_word = '" + pass + "'and user_name = '" + user + "';");
+                                        ResultSet result = csql.statement.executeQuery("select * from accountdetails where ac_no = '" + acNo + "' and password = '" + pass + "'and user_id = '" + user + "';");
                                         if (result.next()) {
                                             
-                                            csql.statement.executeUpdate("update accountdetails set amount = '" + acMoney + "' where account_no = '" + acNo + "'");
+                                            csql.statement.executeUpdate("update accountdetails set amount = '" + acMoney + "' where ac_no = '" + acNo + "'");
                                             csql.statement.executeUpdate("insert into transitions values('" + acNo + "', '" + transitionId + "', '" + transitionType + "', '" + currentDate + "', '" + amount + "');");
 
                                             int newTotalAmount = Integer.parseInt(newAcAmount) + amount;
                                             String newAcMoney = newTotalAmount + "";
                                             String newTransitionType = "Online Receive";
 
-                                            csql.statement.executeUpdate("update accountdetails set amount = '" + newAcMoney + "' where account_no = '" + accountNumberOrUpi + "'");
+                                            csql.statement.executeUpdate("update accountdetails set amount = '" + newAcMoney + "' where ac_no = '" + accountNumberOrUpi + "'");
                                             csql.statement.executeUpdate("insert into transitions values('" + accountNumberOrUpi + "', '" + transitionId + "', '" + newTransitionType + "', '" + currentDate + "', '" + amount + "');");
 
                                             JOptionPane.showMessageDialog(null, "Amount Transfared");
@@ -228,7 +228,7 @@ public class Pay extends JFrame implements ActionListener {
 
                     if (!myUpi.equals(accountNumberOrUpi) && rs.next()) {
                         String newAcAmount = rs.getString("amount");
-                        String accountNumber = rs.getString("account_no");
+                        String accountNumber = rs.getString("ac_no");
                         setVisible(false);
                         upi.setVisible(true);
                         upi.actionPerformed(ae);
@@ -240,16 +240,16 @@ public class Pay extends JFrame implements ActionListener {
                                     try {
                                         String pin = upi.textField.getText();
                                         String transitionType = "UPI Send";
-                                        ResultSet result = csql.statement.executeQuery("select * from accountdetails where account_no = '" + acNo + "' and upi_pin = '" + pin + "';");
+                                        ResultSet result = csql.statement.executeQuery("select * from accountdetails where ac_no = '" + acNo + "' and upi_pin = '" + pin + "';");
                                         if (result.next()) {
-                                            csql.statement.executeUpdate("update accountdetails set amount = '" + acMoney + "' where account_no = '" + acNo + "'");
+                                            csql.statement.executeUpdate("update accountdetails set amount = '" + acMoney + "' where ac_no = '" + acNo + "'");
                                             csql.statement.executeUpdate("insert into transitions values('" + acNo + "', '" + transitionId + "', '" + transitionType + "', '" + currentDate + "', '" + amount + "');");
 
                                             int newTotalAmount = Integer.parseInt(newAcAmount) + amount;
                                             String newAcMoney = newTotalAmount + "";
                                             String newTransitionType = "UPI Receive";
 
-                                            csql.statement.executeUpdate("update accountdetails set amount = '" + newAcMoney + "' where account_no = '" + accountNumber + "'");
+                                            csql.statement.executeUpdate("update accountdetails set amount = '" + newAcMoney + "' where ac_no = '" + accountNumber + "'");
                                             csql.statement.executeUpdate("insert into transitions values('" + accountNumber + "', '" + transitionId + "', '" + newTransitionType + "', '" + currentDate + "', '" + amount + "');");
 
                                             JOptionPane.showMessageDialog(null, "Amount Transfared");
